@@ -317,6 +317,8 @@ $.TokenList = function (input, url_or_data, settings) {
     if(li_data && li_data.length) {
         $.each(li_data, function (index, value) {
             insert_token(value.id, value.name);
+            if (check_token_limit())
+                return;
         });
     }
 
@@ -405,13 +407,8 @@ $.TokenList = function (input, url_or_data, settings) {
         insert_token(li_data.id, li_data.name);
 
         // Check the token limit
-        if(settings.tokenLimit !== null && token_count >= settings.tokenLimit) {
-            input_box.hide();
-            hide_dropdown();
+        if (check_token_limit())
             return;
-        } else {
-            input_box.focus();
-        }
 
         // Clear input box
         input_box.val("");
@@ -435,6 +432,19 @@ $.TokenList = function (input, url_or_data, settings) {
 
         // Hide dropdown if it is visible (eg if we clicked to select token)
         hide_dropdown();
+    }
+
+    // Check if tokens are limited
+    function check_token_limit() {
+        // Check the token limit
+        if(settings.tokenLimit !== null && token_count >= settings.tokenLimit) {
+            input_box.hide();
+            hide_dropdown();
+            return true;
+        } else {
+            input_box.focus();
+        }
+        return false;
     }
 
     // Deselect a token in the token list
