@@ -317,6 +317,7 @@ $.TokenList = function (input, url_or_data, settings) {
     if(li_data && li_data.length) {
         $.each(li_data, function (index, value) {
             insert_token(value.id, value.name);
+            // Check the token limit
             if (check_token_limit())
                 return;
         });
